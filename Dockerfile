@@ -1,4 +1,4 @@
-FROM steamcmd/steamcmd:ubuntu
+FROM steamcmd/steamcmd:latest
 LABEL maintainer="Redshift Enterprises"
 LABEL version="0.1"
 LABEL description="Redshift Atlas Shards"
