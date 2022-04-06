@@ -32,7 +32,7 @@ RUN curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://packa
 RUN echo "deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | tee /etc/apt/sources.list.d/kubernetes.list
 RUN apt-get update
 
-RUN pip install -r piprequirements.txt
+RUN pip install -r requirements.txt
 
 EXPOSE ${REDIS_PORT}}
 EXPOSE ${SEAMLESS_PORT}
