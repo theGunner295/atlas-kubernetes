@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deploymentname
+  namespace: namespace
+spec:
+  selector:
+    matchLabels:
+      app: matchlabel
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: applabel
+    spec:
+      containers:
+        - name: containername
+          image: awesomejack295/atlas-kubernetes
+          ports:
+            - containerPort: 1000
+          env:
+            - name: envname
+              value: envvalue
+          volumeMounts:
+            - mountPath: /cluster
+              name: atlas-shard-volume
+      volumes:
+        - name: atlas-shard-volume
+          persistentVolumeClaim:
+            claimName: atlas-shard-volume-pvc
