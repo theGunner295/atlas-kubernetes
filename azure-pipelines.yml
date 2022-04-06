@@ -1,0 +1,43 @@
+# Docker
+# Build a Docker image 
+# https://docs.microsoft.com/azure/devops/pipelines/languages/docker
+
+trigger:
+  batch: true
+  branches:
+    include:
+    - master
+  paths:
+    exclude:
+      - README.md
+      - LICENSE
+      - .gitignore
+
+resources:
+- repo: self
+
+#variables:
+#  tag: 'Set by Powershell script'
+#   tag: 'latest'
+
+stages:
+- stage: Build
+  displayName: Build image
+  jobs:  
+  - job: Build
+    displayName: Build
+    pool: 
+      name: Redshift-OnPrem-Linux
+      vmImage: 'ubuntu-latest'
+    steps:
+    - task: Docker@2
+      inputs:
+        containerRegistry: 'DockerHub-awesomejack295'
+        repository: 'awesomejack295/atlas-kubernetes'
+        command: 'buildAndPush'
+        Dockerfile: './Dockerfile'
+        tags: latest
+    - task: CmdLine@2
+      displayName: Cleaning up unneeded images
+      inputs:
+       script: 'docker system prune -a --force' 
