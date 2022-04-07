@@ -60,6 +60,10 @@ IP_addr = 0
 
 ### Main script starts here
 if (os.environ.get('POD_TYPE') == 'mgmt'):
+    configfiles = ['/cluster/servergrid/ServerGrid.ServerOnly.json', '/cluster/servergrid/ServerGrid.json']
+    for cf in configfiles:
+        shutil.copy(cf, '/cluster/atlas/ShooterGame/')
+
     tries = 0
     while (not exists('/cluster/kubectl/config')):
         tries += 1
@@ -76,10 +80,6 @@ if (os.environ.get('POD_TYPE') == 'mgmt'):
         sleep(60)
         if tries > 10:
             os._exit(1)
-
-    configfiles = ['/cluster/servergrid/ServerGrid.ServerOnly.json', '/cluster/servergrid/ServerGrid.json']
-    for cf in configfiles:
-        shutil.copy(cf, '/cluster/atlas/ShooterGame/')
 
     os.system('apt-get install -y kubectl')
     if (not os.environ.get('REDIS_SERVER_FQDN')):
