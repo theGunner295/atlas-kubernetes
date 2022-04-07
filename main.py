@@ -94,10 +94,10 @@ if (os.environ.get('POD_TYPE') == 'mgmt'):
     print('Creating required namespaces')
     os.system('kubectl apply -f /cluster/yaml/namespace.yaml')
     # Importing yaml service templates in preperation for full deployment
-    ServiceTemplate_Path = "/cluster/yamltemplates/service.yaml"
+    ServiceTemplate_Path = "/app/yamltemplates/service.yaml"
     with open(ServiceTemplate_Path) as st:
         ServiceTemplate = yaml.load(st,Loader=yaml.FullLoader)
-    DeploymentTemplate_Path = "/cluster/yamltemplates/deployment.yaml"
+    DeploymentTemplate_Path = "/app/yamltemplates/deployment.yaml"
     with open(DeploymentTemplate_Path) as st:
         DeploymentTemplate = yaml.load(st,Loader=yaml.FullLoader)
     RedisClear = ('externalIPs')

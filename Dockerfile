@@ -17,9 +17,9 @@ ENV Y=0
 ENV MAX_PLAYERS=20
 ENV DEBIAN_FRONTEND=noninteractive
 
-WORKDIR /cluster
+WORKDIR /app
 
-COPY . /cluster
+COPY . /app
 
 RUN apt-get update \
 && apt-get install -y \
@@ -45,5 +45,5 @@ EXPOSE ${RCON_PORT}/udp
 
 RUN [ ! -d "/cluster/atlas/ShooterGame" ] && mkdir -p /cluster/atlas/ShooterGame
 RUN [ ! -d "/cluster/kubectl/" ] && mkdir -p /cluster/kubectl
-#ENTRYPOINT [ "python3", "/cluster/main.py" ]
-CMD [ "python3", "main.py" ]
+ENTRYPOINT [ "python3", "main.py" ]
+#CMD [ "python3", "main.py" ]
