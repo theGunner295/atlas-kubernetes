@@ -165,7 +165,9 @@ if (os.environ.get('POD_TYPE') == 'mgmt'):
     RedisDeployment['spec']['template']['spec']['containers'][0]['ports'][0]['name'] = 'tcp6379'
     RedisDeployment['spec']['template']['spec']['containers'][0]['ports'][0]['containerPort'] = 6379
     RedisDeployment['spec']['template']['spec']['containers'][0]['ports'][0]['protocol'] = 'TCP'
-    RedisDeployment['spec']['template']['spec']['containers'][0]['env'] = [{'name': 'POD_TYPE', 'value': 'redis'},{'name': 'REDIS_PORT', 'value': 6379}]
+    RedisDeployment['spec']['template']['spec']['containers'][0]['env'] = [
+        {'name': 'POD_TYPE', 'value': 'redis'},
+        {'name': 'REDIS_PORT', 'value': '6379'}]
     
     RedisDeployment_Path = "/app/yaml/RedisDeployment.yaml"
     with open(RedisDeployment_Path,"w") as RedisDeployment_File:
