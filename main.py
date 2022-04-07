@@ -86,6 +86,7 @@ if (os.environ.get('POD_TYPE') == 'mgmt'):
             os._exit(1)
 
     os.system('apt-get install -y kubectl')
+    REDIS_LOCATION = "IP Not Working - Ignore"
     if (not os.environ.get('REDIS_SERVER_FQDN')):
         print('Creating redis service')
         with open("/cluster/kubectl/config", "rt") as kubeconf_file:
@@ -93,8 +94,7 @@ if (os.environ.get('POD_TYPE') == 'mgmt'):
         KubeURL = kubeconf['clusters'][0]['cluster']['server']
         ClusterExtIP = regex.findall(r'(?:\d{1,3}\.)+(?:\d{1,3})',KubeURL)[0]
         REDIS_LOCATION = 'atlas-redis.redis.svc.cluster.local'
-    REDIS_LOCATION = os.environ.get('REDIS_SERVER_FQDN')
-    REDIS_LOCATION = "IP Not Working - Ignore"
+    #REDIS_LOCATION = os.environ.get('REDIS_SERVER_FQDN')
     with open('/cluster/atlas/ShooterGame/ServerGrid.ServerOnly.json','r+') as ServerGrid_ServerOnly_File:
         ServerGrid_ServerOnly = json.load(ServerGrid_ServerOnly_File)
         print('Setting Redis URL in server config files')
