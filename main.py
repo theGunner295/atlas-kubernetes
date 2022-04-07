@@ -49,10 +49,11 @@ def permissive_json_loads(text):
         else:
             return data
 
-gw = os.popen("ip -4 route show default").read().split()
-s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-s.connect((gw[2], 0))
-IP_addr = s.getsockname()[0]
+#gw = os.popen("ip -4 route show default").read().split()
+#s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+#s.connect((gw[2], 0))
+#IP_addr = s.getsockname()[0]
+IP_addr = 0
 
 
 
