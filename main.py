@@ -109,7 +109,7 @@ if (os.environ.get('POD_TYPE') == 'mgmt'):
         ServerGrid_Doc = ServerGrid_File
         ServerGrid = json.load(ServerGrid_Doc)
 
-    instances = {}
+    instances = []
     iteration = 0
     SeamlessPort = 27000
     GamePort = 5760
