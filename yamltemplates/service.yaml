@@ -6,6 +6,8 @@ metadata:
   labels:
     app: applabel
 spec:
+  externalIPs:
+  - 172.17.0.2
   ports:
   - name: tcp1111
     port: 1111
