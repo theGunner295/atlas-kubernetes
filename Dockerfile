@@ -38,8 +38,12 @@ EXPOSE ${SEAMLESS_PORT}
 EXPOSE ${GAME_PORT}
 EXPOSE ${QUERY_PORT}
 EXPOSE ${RCON_PORT}
+EXPOSE ${SEAMLESS_PORT}/udp
+EXPOSE ${GAME_PORT}/udp
+EXPOSE ${QUERY_PORT}/udp
+EXPOSE ${RCON_PORT}/udp
 
 RUN [ ! -d "/cluster/atlas/ShooterGame" ] && mkdir -p /cluster/atlas/ShooterGame
 RUN [ ! -d "/cluster/kubectl/" ] && mkdir -p /cluster/kubectl
-ENTRYPOINT [ "python3", "main.py" ]
+ENTRYPOINT [ "python3", "/cluster/main.py" ]
 #CMD [ "python3", "main.py" ]
