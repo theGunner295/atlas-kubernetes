@@ -5,7 +5,9 @@ import socket
 import sys
 import yaml
 import regex
-from .lib.functions import alphabet_position,extract_num,permissive_json_loads
+from string import ascii_lowercase
+import json
+from json.decoder import JSONDecodeError
 
 ## Environment variables
 """ 
@@ -23,12 +25,38 @@ ENV MAX_PLAYERS=20
  """
 
 
+## Functions used later
+LETTERS = {letter: str(index) for index, letter in enumerate(ascii_lowercase, start=1)} 
+
+def alphabet_position(text):
+    text = text.lower()
+    numbers = [LETTERS[character] for character in text if character in LETTERS]
+    return ' '.join(numbers)
+
+def extract_num(string):
+    num = ''.join(filter(lambda i: i.isdigit(), string))
+    return num
+
+def permissive_json_loads(text):
+    while True:
+        try:
+            data = json.loads(text)
+        except JSONDecodeError as exc:
+            if exc.msg == 'Invalid \\escape':
+                text = text[:exc.pos] + '\\' + text[exc.pos:]
+            else:
+                raise
+        else:
+            return data
+
 gw = os.popen("ip -4 route show default").read().split()
 s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 s.connect((gw[2], 0))
 IP_addr = s.getsockname()[0]
 
 
+
+### Main script starts here
 if (os.environ.get('POD_TYPE') == 'mgmt'):
     tries = 0
     while (not exists('/cluster/kubectl/config')):
@@ -55,7 +83,6 @@ if (os.environ.get('POD_TYPE') == 'mgmt'):
         KubeURL = kubeconf['clusters'][0]['cluster']['server']
         ClusterExtIP = regex.findall(r'(?:\d{1,3}\.)+(?:\d{1,3})',KubeURL)[0]
         REDIS_LOCATION = 'atlas-redis.redis.svc.cluster.local'
-    import json
     REDIS_LOCATION = os.environ.get('REDIS_SERVER_FQDN')
     with open('/cluster/atlas/ShooterGame/ServerGrid.ServerOnly.json','r+') as ServerGrid_ServerOnly_File:
         ServerGrid_ServerOnly = json.load(ServerGrid_ServerOnly_File)
