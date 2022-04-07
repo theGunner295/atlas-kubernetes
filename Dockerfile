@@ -41,4 +41,5 @@ EXPOSE ${RCON_PORT}
 
 RUN [ ! -d "/cluster/atlas/ShooterGame" ] && mkdir -p /cluster/atlas/ShooterGame
 RUN [ ! -d "/cluster/kubectl/" ] && mkdir -p /cluster/kubectl
+ENTRYPOINT [ "+quit" ]
 CMD [ "python3", "main.py" ]
