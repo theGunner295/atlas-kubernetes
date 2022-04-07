@@ -60,6 +60,10 @@ IP_addr = 0
 
 ### Main script starts here
 if (os.environ.get('POD_TYPE') == 'mgmt'):
+
+    configdir = exists('/cluster/atlas/ShooterGame')
+    if not configdir:
+        os.makedirs('/cluster/atlas/ShooterGame')
     configfiles = ['/cluster/servergrid/ServerGrid.ServerOnly.json', '/cluster/servergrid/ServerGrid.json']
     for cf in configfiles:
         shutil.copy(cf, '/cluster/atlas/ShooterGame/')
