@@ -132,7 +132,7 @@ if (os.environ.get('POD_TYPE') == 'mgmt'):
         RCONPort += 2
 
     print('Creating required namespaces')
-    os.system('kubectl apply -f /cluster/yaml/namespace.yaml')
+    os.system('kubectl apply -f /app/yaml/namespace.yaml')
     # Importing yaml service templates in preperation for full deployment
     ServiceTemplate_Path = "/app/yamltemplates/service.yaml"
     with open(ServiceTemplate_Path) as st:
@@ -149,10 +149,10 @@ if (os.environ.get('POD_TYPE') == 'mgmt'):
     RedisService['metadata']['namespace']='atlas-shards'
     RedisService['metadata']['labels'] = {'app':'Atlas-Redis'}
     RedisService['spec']['selector'] = {'app': 'atlas-redis'}
-    RedisService_Path = "/cluster/yaml/RedisService.yaml"
+    RedisService_Path = "/app/yaml/RedisService.yaml"
     with open(RedisService_Path,"w") as RedisService_File:
         yaml.dump(RedisService, RedisService_File)
-    os.system('kubectl apply -f /cluster/yaml/RedisService.yaml')
+    os.system('kubectl apply -f /app/yaml/RedisService.yaml')
     with open(ServiceTemplate_Path) as st:
         ServiceTemplate = yaml.load(st,Loader=yaml.FullLoader)
 
@@ -169,10 +169,10 @@ if (os.environ.get('POD_TYPE') == 'mgmt'):
         {'name': 'POD_TYPE', 'value': 'redis'},
         {'name': 'REDIS_PORT', 'value': 6379}]
     
-    RedisDeployment_Path = "/cluster/yaml/RedisDeployment.yaml"
+    RedisDeployment_Path = "/app/yaml/RedisDeployment.yaml"
     with open(RedisDeployment_Path,"w") as RedisDeployment_File:
         yaml.dump(RedisDeployment, RedisDeployment_File)
-    os.system('kubectl apply -f /cluster/yaml/RedisDeployment.yaml')
+    os.system('kubectl apply -f /app/yaml/RedisDeployment.yaml')
 
     with open(DeploymentTemplate_Path) as st:
         DeploymentTemplate = yaml.load(st,Loader=yaml.FullLoader)
@@ -205,12 +205,12 @@ if (os.environ.get('POD_TYPE') == 'mgmt'):
     AtlasService['metadata']['namespace']='atlas-shards'
     AtlasService['metadata']['labels'] = {'app':'Atlas'}
     AtlasService['spec']['selector'] = {'app': 'atlas'}
-    AtlasService_Path = "/cluster/yaml/AtlasService.yaml"
+    AtlasService_Path = "/app/yaml/AtlasService.yaml"
     with open(AtlasService_Path,"w") as AtlasService_File:
         yaml.dump(AtlasService, AtlasService_File)
-    os.system('kubectl apply -f /cluster/yaml/AtlasService.yaml')
+    os.system('kubectl apply -f /app/yaml/AtlasService.yaml')
 
-    AtlasDeployment_Path = "/cluster/yaml/AtlasDeployment.yaml"
+    AtlasDeployment_Path = "/app/yaml/AtlasDeployment.yaml"
     AtlasDeployment=DeploymentTemplate
     AtlasDeployment['metadata']['name'] = 'atlas-deployment'
     AtlasDeployment['metadata']['namespace'] = 'atlas-shards'
@@ -252,7 +252,7 @@ if (os.environ.get('POD_TYPE') == 'mgmt'):
     with open(AtlasDeployment_Path,"w") as AtlasDeployment_File:
         yaml.dump(AtlasDeployment, AtlasDeployment_File)
         
-    os.system('kubectl apply -f /cluster/yaml/AtlasDeployment.yaml')
+    os.system('kubectl apply -f /app/yaml/AtlasDeployment.yaml')
 
     os.system('steamcmd +force_install_dir /cluster/atlas +login anonymous +app_update 1006030 +quit')
 
