@@ -19,7 +19,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 WORKDIR /cluster
 
-COPY . .
+COPY . /cluster
 
 RUN apt-get update \
 && apt-get install -y \
