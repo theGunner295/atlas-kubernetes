@@ -11,6 +11,7 @@ import json
 from json.decoder import JSONDecodeError
 
 ## Environment variables
+
 """ 
 ARG REDIS_PORT
 ARG SEAMLESS_PORT
