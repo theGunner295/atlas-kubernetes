@@ -94,7 +94,7 @@ if (os.environ.get('POD_TYPE') == 'mgmt'):
         ClusterExtIP = regex.findall(r'(?:\d{1,3}\.)+(?:\d{1,3})',KubeURL)[0]
         REDIS_LOCATION = 'atlas-redis.redis.svc.cluster.local'
     REDIS_LOCATION = os.environ.get('REDIS_SERVER_FQDN')
-    with open('/cluster/atlas/ShooterGame/ServerGrid.ServerOnly.json','w') as ServerGrid_ServerOnly_File:
+    with open('/cluster/atlas/ShooterGame/ServerGrid.ServerOnly.json','r+') as ServerGrid_ServerOnly_File:
         ServerGrid_ServerOnly = json.load(ServerGrid_ServerOnly_File)
         print('Setting Redis URL in server config files')
         print('Redis FQDN is ' + REDIS_LOCATION)
