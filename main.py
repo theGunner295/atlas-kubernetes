@@ -31,14 +31,15 @@ IP_addr = s.getsockname()[0]
 
 if (os.environ.get('POD_TYPE') == 'mgmt'):
     tries = 0
-    for (not exists('/cluster/kubectl/config')):
+    while (not exists('/cluster/kubectl/config')):
         tries += 1
+        kubeconfigpresence = exists('/cluster/kubectl/config')
         print('Kubectl config missing from /cluster/kubectl')
         sleep(60)
         if tries > 10:
             os._exit(1)
     tries = 0
-    for (not (exists('/cluster/atlas/ShooterGame/ServerGrid.ServerOnly.json') and exists('/cluster/atlas/ShooterGame/ServerGrid.json'))):
+    while (not (exists('/cluster/atlas/ShooterGame/ServerGrid.ServerOnly.json') and exists('/cluster/atlas/ShooterGame/ServerGrid.json'))):
         tries += 1
         print('Atlas server config missing from /cluster/atlas/ShooterGame/')
         print('Config files required are ServerGrid.ServerOnly.json and ServerGrid.json')
