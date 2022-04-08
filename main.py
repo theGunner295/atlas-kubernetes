@@ -78,7 +78,7 @@ if (os.environ.get('POD_TYPE') == 'mgmt'):
         shutil.copy(cf, '/cluster/atlas/ShooterGame/')
 
     depdir = exists('/app/deployments')
-    if not configdir:
+    if not depdir:
         os.makedirs('/app/deployments')
 
     tries = 0
