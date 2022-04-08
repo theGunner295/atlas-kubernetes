@@ -218,15 +218,19 @@ if (os.environ.get('POD_TYPE') == 'mgmt'):
         yaml.dump(AtlasService, AtlasService_File)
     os.system('kubectl apply -f /app/yaml/AtlasService.yaml')
 
-    AtlasDeployment_Path = "/app/yaml/AtlasDeployment.yaml"
-    AtlasDeployment=DeploymentTemplate
-    AtlasDeployment['metadata']['name'] = 'atlas-deployment'
-    AtlasDeployment['metadata']['namespace'] = 'atlas-shards'
-    AtlasDeployment['spec']['selector']['matchLabels'] = {'app':'Atlas'}
-    AtlasDeployment['spec']['template']['metadata']['labels']['app'] = 'Atlas'
+    AtlasDeployment_Path = "/app/deployments/"
+
     iteration = 0
     for servers in instances:
-        ContainerName = "atlas-" + lcconabc(servers['x']+1) + str(servers['y']+1)
+        DeploymentTemplate_Path = "E:\\GitHub\\atlas-kubernetes\\yamltemplates\\deployment.yaml"
+        with open(DeploymentTemplate_Path) as st:
+            DeploymentTemplate = yaml.load(st,Loader=yaml.FullLoader)
+        AtlasDeployment=DeploymentTemplate
+        SeamlessPortStr = str(SeamlessPort)
+        GamePortStr = str(GamePort)
+        QueryPortStr = str(QueryPort)
+        RCONPortStr = str(RCONPort)
+        ContainerName = "atlas-" + lcconabc(servers['x']+1) + str(servers['y'])
         SeamlessPortNameTCP = "tcp" + str(servers['SeamlessPort'])
         GamePortNameTCP = "tcp" + str(servers['GamePort'])
         QueryPortNameTCP = "tcp" + str(servers['QueryPort'])
@@ -235,14 +239,14 @@ if (os.environ.get('POD_TYPE') == 'mgmt'):
         GamePortNameUDP = "udp" + str(servers['GamePort'])
         QueryPortNameUDP = "udp" + str(servers['QueryPort'])
         RCONPortNameUDP = "udp" + str(servers['RCONPort'])
-        SeamlessPortStr = str(SeamlessPort)
-        GamePortStr = str(GamePort)
-        QueryPortStr = str(QueryPort)
-        RCONPortStr = str(RCONPort)
+        AtlasDeployment['metadata']['name'] = (ContainerName + '-deployment')
+        AtlasDeployment['metadata']['namespace'] = 'atlas-shards'
+        AtlasDeployment['spec']['selector']['matchLabels'] = {'app':'Atlas'}
+        AtlasDeployment['spec']['template']['metadata']['labels']['app'] = 'Atlas'
         AtlasDeployment['spec']['template']['spec']['containers'].insert(len(AtlasDeployment['spec']['template']['spec']['containers']),{})
-        AtlasDeployment['spec']['template']['spec']['containers'][iteration]['image'] = 'awesomejack295/atlas-kubernetes'
-        AtlasDeployment['spec']['template']['spec']['containers'][iteration]['name'] = ContainerName
-        AtlasDeployment['spec']['template']['spec']['containers'][iteration]['ports'] = [
+        AtlasDeployment['spec']['template']['spec']['containers'][0]['image'] = 'awesomejack295/atlas-kubernetes'
+        AtlasDeployment['spec']['template']['spec']['containers'][0]['name'] = ContainerName
+        AtlasDeployment['spec']['template']['spec']['containers'][0]['ports'] = [
             {'name' : SeamlessPortNameTCP, 'containerPort' : servers['SeamlessPort'], 'protocol' : 'TCP'},
             {'name' : SeamlessPortNameUDP,'containerPort' : servers['SeamlessPort'], 'protocol' : 'UDP'},
             {'name' : GamePortNameTCP, 'containerPort' : servers['GamePort'], 'protocol' : 'TCP'},
@@ -251,23 +255,19 @@ if (os.environ.get('POD_TYPE') == 'mgmt'):
             {'name' : QueryPortNameUDP,'containerPort' : servers['QueryPort'], 'protocol' : 'UDP'},
             {'name' : RCONPortNameTCP, 'containerPort' : servers['RCONPort'], 'protocol' : 'TCP'},
             {'name' : RCONPortNameUDP,'containerPort' : servers['RCONPort'], 'protocol' : 'UDP'}]
-        AtlasDeployment['spec']['template']['spec']['containers'][iteration]['env'] = [
+        AtlasDeployment['spec']['template']['spec']['containers'][0]['env'] = [
             {'name': 'XCoords', 'value': str(servers['x'])},
             {'name': 'YCoords', 'value': str(servers['y'])},
             {'name': 'SEAMLESS_PORT', 'value': SeamlessPortStr},
             {'name': 'GAME_PORT', 'value': GamePortStr},
             {'name': 'QUERY_PORT', 'value': QueryPortStr},
-            {'name': 'RCON_PORT', 'value': RCONPortStr},
-            {'name': 'POD_TYPE', 'value': 'worker'}]
-        AtlasDeployment['spec']['template']['spec']['containers'][iteration]['labels'] = [
-            {'name': 'app', 'value': 'Atlas'}]
+            {'name': 'RCON_PORT', 'value': RCONPortStr}]
+        AtlasDeployment['spec']['template']['spec']['containers'].pop()
+        with open((AtlasDeployment_Path + "-" + ContainerName + ".yaml"),"w") as AtlasDeployment_File:
+            yaml.dump(AtlasDeployment, AtlasDeployment_File)
         iteration += 1
-    AtlasDeployment['spec']['template']['spec']['containers'].pop()
-    
-    with open(AtlasDeployment_Path,"w") as AtlasDeployment_File:
-        yaml.dump(AtlasDeployment, AtlasDeployment_File)
         
-    os.system('kubectl apply -f /app/yaml/AtlasDeployment.yaml')
+    os.system('kubectl apply -f /app/deployments/')
 
     os.system('steamcmd +force_install_dir /cluster/atlas +login anonymous +app_update 1006030 +quit')
 
