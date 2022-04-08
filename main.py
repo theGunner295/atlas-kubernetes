@@ -263,7 +263,7 @@ if (os.environ.get('POD_TYPE') == 'mgmt'):
             {'name': 'QUERY_PORT', 'value': QueryPortStr},
             {'name': 'RCON_PORT', 'value': RCONPortStr}]
         AtlasDeployment['spec']['template']['spec']['containers'].pop()
-        with open((AtlasDeployment_Path + "-" + ContainerName + ".yaml"),"w") as AtlasDeployment_File:
+        with open((AtlasDeployment_Path + "-" + ContainerName + ".yaml"),"w+") as AtlasDeployment_File:
             yaml.dump(AtlasDeployment, AtlasDeployment_File)
         iteration += 1
         
