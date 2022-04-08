@@ -279,7 +279,7 @@ if (os.environ.get('POD_TYPE') == 'redis'):
 
 
 if (os.environ.get('POD_TYPE') == 'worker'):
-    ServerName = os.environ.get('X') + "-" + os.environ.get('Y')
+    ServerName = os.environ.get('XCoords') + "-" + os.environ.get('YCoords')
     XCoords = os.environ.get('XCoords')
     YCoords = os.environ.get('YCoords')
     SEAMLESS_PORT = os.environ.get('SEAMLESS_PORT')
