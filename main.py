@@ -20,6 +20,7 @@ ARG GAME_PORT
 ARG QUERY_PORT
 ARG RCON_PORT
 ENV PUBLIC_IP="127.0.0.1"
+ENV SEAMLESS_IP="127.0.0.1"
 ENV POD_TYPE="mgmt"
 ENV SERVER_PASSWORD="Default123"
 ENV XCoords=0
@@ -104,16 +105,16 @@ if (os.environ.get('POD_TYPE') == 'mgmt'):
     if (not os.environ.get('REDIS_SERVER_FQDN')):
         print('Creating redis service FQDN')
         REDIS_LOCATION = 'atlas-redis.redis.svc.cluster.local'
-    if (not os.environ.get('PUBLIC_IP')):
-        with open("/cluster/kubectl/config", "rt") as kubeconf_file:
-            kubeconf = yaml.safe_load(kubeconf_file)
-        KubeURL = kubeconf['clusters'][0]['cluster']['server']
-        try:
-            ClusterExtIP = regex.findall(r'(?:\d{1,3}\.)+(?:\d{1,3})',KubeURL)[0]
-        except:
-            Kubetld = get_tld(KubeURL, as_object=True)
-            KubeFQDN = Kubetld.subdomain + "." + Kubetld.domain + "." + Kubetld.suffix
-            ClusterExtIP = socket.gethostbyname(KubeFQDN)
+    #if (not os.environ.get('PUBLIC_IP')):
+    #    with open("/cluster/kubectl/config", "rt") as kubeconf_file:
+    #        kubeconf = yaml.safe_load(kubeconf_file)
+    #    KubeURL = kubeconf['clusters'][0]['cluster']['server']
+    #    try:
+    #        ClusterExtIP = regex.findall(r'(?:\d{1,3}\.)+(?:\d{1,3})',KubeURL)[0]
+    #    except:
+    #        Kubetld = get_tld(KubeURL, as_object=True)
+    #        KubeFQDN = Kubetld.subdomain + "." + Kubetld.domain + "." + Kubetld.suffix
+    #        ClusterExtIP = socket.gethostbyname(KubeFQDN)
     with open('/cluster/atlas/ShooterGame/ServerGrid.ServerOnly.json','r+') as ServerGrid_ServerOnly_File:
         ServerGrid_ServerOnly = json.load(ServerGrid_ServerOnly_File)
         print('Setting Redis URL in server config files')
@@ -194,9 +195,15 @@ if (os.environ.get('POD_TYPE') == 'mgmt'):
 
     with open(DeploymentTemplate_Path) as st:
         DeploymentTemplate = yaml.load(st,Loader=yaml.FullLoader)
-
+    ClusterExtIP=os.environ.get('PUBLIC_IP')
     AtlasService = ServiceTemplate
-    AtlasService['spec']['externalIPs']=[ClusterExtIP]
+    if (os.environ.get('PUBLIC_IP') == "127.0.0.1"):
+        AtlasService['spec']['type']="LoadBalancer"
+        AtlasClear = ('externalIPs')
+        AtlasService['spec'].pop(AtlasClear)
+    else:
+        AtlasService['spec']['externalIPs']=[ClusterExtIP]
+
     AtlasClear = ('ports')
     AtlasService['spec'].pop(AtlasClear)
     AtlasService['spec']['ports'] = []
@@ -300,8 +307,8 @@ if (os.environ.get('POD_TYPE') == 'worker'):
     RCON_PORT = os.environ.get('RCON_PORT')
     SERVER_PASSWORD = os.environ.get('SERVER_PASSWORD')
     MAX_PLAYERS =  os.environ.get('MAX_PLAYERS')
-    PUBLIC_IP = os.environ.get('PUBLIC_IP')
+    SEAMLESS_IP = os.environ.get('SEAMLESS_IP')
 
-    ServerLaunchCommand = "/cluster/atlas/ShooterGame/Binaries/Win64/ShooterGameServer.exe  Ocean?ServerX=" + XCoords + "?ServerY=" + YCoords + "?AltSaveDirectoryName=10?ServerAdminPassword=" + SERVER_PASSWORD + "?MaxPlayers=" + MAX_PLAYERS + "ReservedPlayerSlots=10?QueryPort=" + QUERY_PORT + "?Port=" + GAME_PORT + "?RCONEnabled=true?RCONPort=" + RCON_PORT + "?SeamlessIP=" + PUBLIC_IP + " -log -server"
+    ServerLaunchCommand = "/cluster/atlas/ShooterGame/Binaries/Win64/ShooterGameServer.exe  Ocean?ServerX=" + XCoords + "?ServerY=" + YCoords + "?AltSaveDirectoryName=10?ServerAdminPassword=" + SERVER_PASSWORD + "?MaxPlayers=" + MAX_PLAYERS + "ReservedPlayerSlots=10?QueryPort=" + QUERY_PORT + "?Port=" + GAME_PORT + "?RCONEnabled=true?RCONPort=" + RCON_PORT + "?SeamlessIP=" + SEAMLESS_IP + " -log -server"
     WineLauncher = "/usr/bin/wine " + ServerLaunchCommand
     os.system(WineLauncher)
