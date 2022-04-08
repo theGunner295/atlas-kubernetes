@@ -279,7 +279,7 @@ if (os.environ.get('POD_TYPE') == 'mgmt'):
         
     os.system('kubectl apply -f /app/deployments/')
 
-    os.system('steamcmd +force_install_dir /cluster/atlas +login anonymous +app_update 1006030 +quit')
+    os.system('steamcmd +@sSteamCmdForcePlatformType windows +force_install_dir /cluster/atlas +login anonymous +app_update 1006030 validate +quit')
 
 if (os.environ.get('POD_TYPE') == 'redis'):
     print('Running redis db on ' +  IP_addr)
