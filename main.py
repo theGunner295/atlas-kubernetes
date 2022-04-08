@@ -197,12 +197,12 @@ if (os.environ.get('POD_TYPE') == 'mgmt'):
         DeploymentTemplate = yaml.load(st,Loader=yaml.FullLoader)
     ClusterExtIP=os.environ.get('PUBLIC_IP')
     AtlasService = ServiceTemplate
-    if (os.environ.get('PUBLIC_IP') == "127.0.0.1"):
-        AtlasService['spec']['type']="LoadBalancer"
-        AtlasClear = ('externalIPs')
-        AtlasService['spec'].pop(AtlasClear)
-    else:
-        AtlasService['spec']['externalIPs']=[ClusterExtIP]
+    #if (os.environ.get('PUBLIC_IP') == "127.0.0.1"):
+    #    AtlasService['spec']['type']="LoadBalancer"
+    #    AtlasClear = ('externalIPs')
+    #    AtlasService['spec'].pop(AtlasClear)
+    #else:
+    AtlasService['spec']['externalIPs']=[ClusterExtIP]
 
     AtlasClear = ('ports')
     AtlasService['spec'].pop(AtlasClear)
