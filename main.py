@@ -227,6 +227,10 @@ if (os.environ.get('POD_TYPE') == 'mgmt'):
         GamePortNameUDP = "udp" + str(servers['GamePort'])
         QueryPortNameUDP = "udp" + str(servers['QueryPort'])
         RCONPortNameUDP = "udp" + str(servers['RCONPort'])
+        SeamlessPortStr = str(SeamlessPort)
+        GamePortStr = str(GamePort)
+        QueryPortStr = str(QueryPort)
+        RCONPortStr = str(RCONPort)
         AtlasDeployment['spec']['template']['spec']['containers'].insert(len(AtlasDeployment['spec']['template']['spec']['containers']),{})
         AtlasDeployment['spec']['template']['spec']['containers'][iteration]['image'] = 'awesomejack295/atlas-kubernetes'
         AtlasDeployment['spec']['template']['spec']['containers'][iteration]['name'] = ContainerName
@@ -242,10 +246,10 @@ if (os.environ.get('POD_TYPE') == 'mgmt'):
         AtlasDeployment['spec']['template']['spec']['containers'][iteration]['env'] = [
             {'name': 'X', 'value': str(servers['x'])},
             {'name': 'Y', 'value': str(servers['y'])},
-            {'name': 'SEAMLESS_PORT', 'value': SeamlessPort},
-            {'name': 'GAME_PORT', 'value': GamePort},
-            {'name': 'QUERY_PORT', 'value': QueryPort},
-            {'name': 'RCON_PORT', 'value': RCONPort}]
+            {'name': 'SEAMLESS_PORT', 'value': SeamlessPortStr},
+            {'name': 'GAME_PORT', 'value': GamePortStr},
+            {'name': 'QUERY_PORT', 'value': QueryPortStr},
+            {'name': 'RCON_PORT', 'value': RCONPortStr}]
         iteration += 1
     AtlasDeployment['spec']['template']['spec']['containers'].pop()
     
