@@ -77,9 +77,9 @@ if (os.environ.get('POD_TYPE') == 'mgmt'):
     for cf in configfiles:
         shutil.copy(cf, '/cluster/atlas/ShooterGame/')
 
-    depdir = exists('/app/deployment')
+    depdir = exists('/app/deployments')
     if not configdir:
-        os.makedirs('/app/deployment')
+        os.makedirs('/app/deployments')
 
     tries = 0
     while (not exists('/cluster/kubectl/config')):
