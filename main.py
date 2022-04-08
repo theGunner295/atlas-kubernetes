@@ -259,8 +259,8 @@ if (os.environ.get('POD_TYPE') == 'mgmt'):
             {'name' : RCONPortNameTCP, 'containerPort' : servers['RCONPort'], 'protocol' : 'TCP'},
             {'name' : RCONPortNameUDP,'containerPort' : servers['RCONPort'], 'protocol' : 'UDP'}]
         AtlasDeployment['spec']['template']['spec']['containers'][0]['env'] = [
-            {'name': 'XCoords', 'value': str(servers['x']+1)},
-            {'name': 'YCoords', 'value': str(servers['y'])},
+            {'name': 'XCoords', 'value': str(servers['x'])},
+            {'name': 'YCoords', 'value': str(servers['y']+1)},
             {'name': 'SEAMLESS_PORT', 'value': SeamlessPortStr},
             {'name': 'GAME_PORT', 'value': GamePortStr},
             {'name': 'QUERY_PORT', 'value': QueryPortStr},
