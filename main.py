@@ -230,7 +230,7 @@ if (os.environ.get('POD_TYPE') == 'mgmt'):
         GamePortStr = str(GamePort)
         QueryPortStr = str(QueryPort)
         RCONPortStr = str(RCONPort)
-        ContainerName = "atlas-" + lcconabc(servers['x']+1) + str(servers['y'])
+        ContainerName = "atlas-" + lcconabc(servers['x']+1) + str(servers['y']+1)
         SeamlessPortNameTCP = "tcp" + str(servers['SeamlessPort'])
         GamePortNameTCP = "tcp" + str(servers['GamePort'])
         QueryPortNameTCP = "tcp" + str(servers['QueryPort'])
@@ -263,7 +263,7 @@ if (os.environ.get('POD_TYPE') == 'mgmt'):
             {'name': 'QUERY_PORT', 'value': QueryPortStr},
             {'name': 'RCON_PORT', 'value': RCONPortStr}]
         AtlasDeployment['spec']['template']['spec']['containers'].pop()
-        with open((AtlasDeployment_Path + "-" + ContainerName + ".yaml"),"w+") as AtlasDeployment_File:
+        with open((AtlasDeployment_Path + ContainerName + ".yaml"),"w+") as AtlasDeployment_File:
             yaml.dump(AtlasDeployment, AtlasDeployment_File)
         iteration += 1
         
