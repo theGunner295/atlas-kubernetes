@@ -222,7 +222,7 @@ if (os.environ.get('POD_TYPE') == 'mgmt'):
 
     iteration = 0
     for servers in instances:
-        DeploymentTemplate_Path = "E:\\GitHub\\atlas-kubernetes\\yamltemplates\\deployment.yaml"
+        DeploymentTemplate_Path = "/app/yamltemplates/deployment.yaml"
         with open(DeploymentTemplate_Path) as st:
             DeploymentTemplate = yaml.load(st,Loader=yaml.FullLoader)
         AtlasDeployment=DeploymentTemplate
