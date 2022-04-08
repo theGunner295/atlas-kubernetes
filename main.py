@@ -21,8 +21,8 @@ ARG RCON_PORT
 ENV PUBLIC_IP="127.0.0.1"
 ENV POD_TYPE="mgmt"
 ENV SERVER_PASSWORD="Default123"
-ENV X=0
-ENV Y=0
+ENV XCoords=0
+ENV YCoords=0
 ENV MAX_PLAYERS=20
  """
 
@@ -248,8 +248,8 @@ if (os.environ.get('POD_TYPE') == 'mgmt'):
             {'name' : RCONPortNameTCP, 'containerPort' : servers['RCONPort'], 'protocol' : 'TCP'},
             {'name' : RCONPortNameUDP,'containerPort' : servers['RCONPort'], 'protocol' : 'UDP'}]
         AtlasDeployment['spec']['template']['spec']['containers'][iteration]['env'] = [
-            {'name': 'X', 'value': str(servers['x'])},
-            {'name': 'Y', 'value': str(servers['y'])},
+            {'name': 'XCoords', 'value': str(servers['x'])},
+            {'name': 'YCoords', 'value': str(servers['y'])},
             {'name': 'SEAMLESS_PORT', 'value': SeamlessPortStr},
             {'name': 'GAME_PORT', 'value': GamePortStr},
             {'name': 'QUERY_PORT', 'value': QueryPortStr},
@@ -274,8 +274,8 @@ if (os.environ.get('POD_TYPE') == 'redis'):
 
 if (os.environ.get('POD_TYPE') == 'worker'):
     ServerName = os.environ.get('X') + "-" + os.environ.get('Y')
-    XCoords = os.environ.get('X')
-    YCoords = os.environ.get('Y')
+    XCoords = os.environ.get('XCoords')
+    YCoords = os.environ.get('YCoords')
     SEAMLESS_PORT = os.environ.get('SEAMLESS_PORT')
     GAME_PORT = os.environ.get('GAME_PORT')
     QUERY_PORT = os.environ.get('QUERY_PORT')
