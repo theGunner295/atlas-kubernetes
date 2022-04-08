@@ -9,6 +9,7 @@ import regex
 from string import ascii_lowercase
 import json
 from json.decoder import JSONDecodeError
+from tld import get_tld
 
 ## Environment variables
 
@@ -105,7 +106,12 @@ if (os.environ.get('POD_TYPE') == 'mgmt'):
         with open("/cluster/kubectl/config", "rt") as kubeconf_file:
             kubeconf = yaml.safe_load(kubeconf_file)
         KubeURL = kubeconf['clusters'][0]['cluster']['server']
-        ClusterExtIP = regex.findall(r'(?:\d{1,3}\.)+(?:\d{1,3})',KubeURL)[0]
+        try:
+            ClusterExtIP = regex.findall(r'(?:\d{1,3}\.)+(?:\d{1,3})',KubeURL)[0]
+        except:
+            Kubetld = get_tld(KubeURL, as_object=True)
+            KubeFQDN = Kubetld.subdomain + "." + Kubetld.domain + "." + Kubetld.suffix
+            ClusterExtIP = socket.gethostbyname(KubeFQDN)
         REDIS_LOCATION = 'atlas-redis.redis.svc.cluster.local'
     with open('/cluster/atlas/ShooterGame/ServerGrid.ServerOnly.json','r+') as ServerGrid_ServerOnly_File:
         ServerGrid_ServerOnly = json.load(ServerGrid_ServerOnly_File)
