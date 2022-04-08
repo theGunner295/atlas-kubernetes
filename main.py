@@ -257,7 +257,8 @@ if (os.environ.get('POD_TYPE') == 'mgmt'):
             {'name': 'SEAMLESS_PORT', 'value': SeamlessPortStr},
             {'name': 'GAME_PORT', 'value': GamePortStr},
             {'name': 'QUERY_PORT', 'value': QueryPortStr},
-            {'name': 'RCON_PORT', 'value': RCONPortStr}]
+            {'name': 'RCON_PORT', 'value': RCONPortStr},
+            {'name': 'POD_TYPE', 'value': 'worker'}]
         iteration += 1
     AtlasDeployment['spec']['template']['spec']['containers'].pop()
     
