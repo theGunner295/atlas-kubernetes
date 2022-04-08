@@ -50,6 +50,10 @@ def permissive_json_loads(text):
         else:
             return data
 
+def conabc(number):
+    letter = chr(ord('@')+number)
+    return letter
+
 #gw = os.popen("ip -4 route show default").read().split()
 #s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 #s.connect((gw[2], 0))
@@ -218,7 +222,7 @@ if (os.environ.get('POD_TYPE') == 'mgmt'):
     AtlasDeployment['spec']['template']['metadata']['labels']['app'] = 'Atlas'
     iteration = 0
     for servers in instances:
-        ContainerName = "atlas-" + str(servers['x']) + "-" + str(servers['y'])
+        ContainerName = "atlas-" + conabc(servers['x']) + str(servers['y'])
         SeamlessPortNameTCP = "tcp" + str(servers['SeamlessPort'])
         GamePortNameTCP = "tcp" + str(servers['GamePort'])
         QueryPortNameTCP = "tcp" + str(servers['QueryPort'])
