@@ -107,7 +107,6 @@ if (os.environ.get('POD_TYPE') == 'mgmt'):
         KubeURL = kubeconf['clusters'][0]['cluster']['server']
         ClusterExtIP = regex.findall(r'(?:\d{1,3}\.)+(?:\d{1,3})',KubeURL)[0]
         REDIS_LOCATION = 'atlas-redis.redis.svc.cluster.local'
-    #REDIS_LOCATION = os.environ.get('REDIS_SERVER_FQDN')
     with open('/cluster/atlas/ShooterGame/ServerGrid.ServerOnly.json','r+') as ServerGrid_ServerOnly_File:
         ServerGrid_ServerOnly = json.load(ServerGrid_ServerOnly_File)
         print('Setting Redis URL in server config files')
@@ -260,7 +259,7 @@ if (os.environ.get('POD_TYPE') == 'mgmt'):
             {'name' : RCONPortNameTCP, 'containerPort' : servers['RCONPort'], 'protocol' : 'TCP'},
             {'name' : RCONPortNameUDP,'containerPort' : servers['RCONPort'], 'protocol' : 'UDP'}]
         AtlasDeployment['spec']['template']['spec']['containers'][0]['env'] = [
-            {'name': 'XCoords', 'value': str(servers['x'])},
+            {'name': 'XCoords', 'value': str(servers['x']+1)},
             {'name': 'YCoords', 'value': str(servers['y'])},
             {'name': 'SEAMLESS_PORT', 'value': SeamlessPortStr},
             {'name': 'GAME_PORT', 'value': GamePortStr},
