@@ -147,7 +147,7 @@ if (os.environ.get('POD_TYPE') == 'mgmt'):
     RedisService['spec']['ports'] = [{'name': 'tcp6379', 'port': 6379, 'protocol': 'TCP', 'targetPort': 6379}]
     RedisService['metadata']['name'] = 'atlas-redis'
     RedisService['metadata']['namespace']='atlas-shards'
-    RedisService['metadata']['labels'] = {'app':'Atlas-Redis'}
+    RedisService['metadata']['labels'] = {'app':'atlas-redis'}
     RedisService['spec']['selector'] = {'app': 'atlas-redis'}
     RedisService_Path = "/app/yaml/RedisService.yaml"
     with open(RedisService_Path,"w") as RedisService_File:
@@ -159,8 +159,8 @@ if (os.environ.get('POD_TYPE') == 'mgmt'):
     RedisDeployment=DeploymentTemplate
     RedisDeployment['metadata']['name'] = 'redis-deployment'
     RedisDeployment['metadata']['namespace'] = 'atlas-shards'
-    RedisDeployment['spec']['selector']['matchLabels'] = {'app':'redis'}
-    RedisDeployment['spec']['template']['metadata']['labels']['app'] = 'Atlas-Redis'
+    RedisDeployment['spec']['selector']['matchLabels'] = {'app':'atlas-redis'}
+    RedisDeployment['spec']['template']['metadata']['labels']['app'] = 'atlas-redis'
     RedisDeployment['spec']['template']['spec']['containers'][0]['name'] = 'atlas-redis'
     RedisDeployment['spec']['template']['spec']['containers'][0]['ports'][0]['name'] = 'tcp6379'
     RedisDeployment['spec']['template']['spec']['containers'][0]['ports'][0]['containerPort'] = 6379
@@ -204,7 +204,7 @@ if (os.environ.get('POD_TYPE') == 'mgmt'):
     AtlasService['metadata']['name'] = 'atlas'
     AtlasService['metadata']['namespace']='atlas-shards'
     AtlasService['metadata']['labels'] = {'app':'Atlas'}
-    AtlasService['spec']['selector'] = {'app': 'atlas'}
+    AtlasService['spec']['selector'] = {'app': 'Atlas'}
     AtlasService_Path = "/app/yaml/AtlasService.yaml"
     with open(AtlasService_Path,"w") as AtlasService_File:
         yaml.dump(AtlasService, AtlasService_File)
