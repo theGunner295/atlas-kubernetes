@@ -226,7 +226,7 @@ if (os.environ.get('POD_TYPE') == 'mgmt'):
     AtlasDeployment['spec']['template']['metadata']['labels']['app'] = 'Atlas'
     iteration = 0
     for servers in instances:
-        ContainerName = "atlas-" + lcconabc(servers['x']+1) + str(servers['y'])
+        ContainerName = "atlas-" + lcconabc(servers['x']+1) + str(servers['y']+1)
         SeamlessPortNameTCP = "tcp" + str(servers['SeamlessPort'])
         GamePortNameTCP = "tcp" + str(servers['GamePort'])
         QueryPortNameTCP = "tcp" + str(servers['QueryPort'])
@@ -259,6 +259,7 @@ if (os.environ.get('POD_TYPE') == 'mgmt'):
             {'name': 'QUERY_PORT', 'value': QueryPortStr},
             {'name': 'RCON_PORT', 'value': RCONPortStr},
             {'name': 'POD_TYPE', 'value': 'worker'}]
+        AtlasDeployment['spec']['template']['spec']['containers'][iteration]['labels']
         iteration += 1
     AtlasDeployment['spec']['template']['spec']['containers'].pop()
     
