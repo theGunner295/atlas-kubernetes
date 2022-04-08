@@ -259,7 +259,8 @@ if (os.environ.get('POD_TYPE') == 'mgmt'):
             {'name': 'QUERY_PORT', 'value': QueryPortStr},
             {'name': 'RCON_PORT', 'value': RCONPortStr},
             {'name': 'POD_TYPE', 'value': 'worker'}]
-        AtlasDeployment['spec']['template']['spec']['containers'][iteration]['labels']
+        AtlasDeployment['spec']['template']['spec']['containers'][iteration]['labels'] = [
+            {'name': 'app', 'value': 'Atlas'}]
         iteration += 1
     AtlasDeployment['spec']['template']['spec']['containers'].pop()
     
