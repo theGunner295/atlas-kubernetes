@@ -213,27 +213,54 @@ if (os.environ.get('POD_TYPE') == 'mgmt'):
         GamePortNameTCP = "tcp" + str(servers['GamePort'])
         QueryPortNameTCP = "tcp" + str(servers['QueryPort'])
         RCONPortNameTCP = "tcp" + str(servers['RCONPort'])
+        AtlasService['spec']['ports'].insert(0,{'name': SeamlessPortNameTCP, 'port': servers['SeamlessPort'], 'protocol': 'TCP', 'targetPort': servers['SeamlessPort']})
+        AtlasService['spec']['ports'].insert(0,{'name': GamePortNameTCP, 'port': servers['GamePort'], 'protocol': 'TCP', 'targetPort': servers['GamePort']})
+        AtlasService['spec']['ports'].insert(0,{'name': QueryPortNameTCP, 'port': servers['QueryPort'], 'protocol': 'TCP', 'targetPort': servers['QueryPort']})
+        AtlasService['spec']['ports'].insert(0,{'name': RCONPortNameTCP, 'port': servers['RCONPort'], 'protocol': 'TCP', 'targetPort': servers['RCONPort']})
+        iteration += 1
+    AtlasService['metadata']['name'] = 'atlas-tcp'
+    AtlasService['metadata']['namespace']='atlas-shards'
+    AtlasService['metadata']['labels'] = {'app':'Atlas'}
+    AtlasService['spec']['selector'] = {'app': 'Atlas'}
+    AtlasService_Path = "/app/yaml/AtlasServiceTCP.yaml"
+    with open(AtlasService_Path,"w") as AtlasService_File:
+        yaml.dump(AtlasService, AtlasService_File)
+    os.system('kubectl apply -f /app/yaml/AtlasServiceTCP.yaml')
+
+    ServiceTemplate_Path = "/app/yamltemplates/service.yaml"
+    with open(ServiceTemplate_Path) as st:
+        ServiceTemplate = yaml.load(st,Loader=yaml.FullLoader)
+
+    AtlasService = ServiceTemplate
+    if (os.environ.get('PUBLIC_IP') == "127.0.0.1"):
+        AtlasService['spec']['type']="LoadBalancer"
+        AtlasClear = ('externalIPs')
+        AtlasService['spec'].pop(AtlasClear)
+    else:
+        AtlasService['spec']['externalIPs']=[ClusterExtIP]
+
+    AtlasClear = ('ports')
+    AtlasService['spec'].pop(AtlasClear)
+    AtlasService['spec']['ports'] = []
+    iteration = 0
+    for servers in instances:
         SeamlessPortNameUDP = "udp" + str(servers['SeamlessPort'])
         GamePortNameUDP = "udp" + str(servers['GamePort'])
         QueryPortNameUDP = "udp" + str(servers['QueryPort'])
         RCONPortNameUDP = "udp" + str(servers['RCONPort'])
-        AtlasService['spec']['ports'].insert(0,{'name': SeamlessPortNameTCP, 'port': servers['SeamlessPort'], 'protocol': 'TCP', 'targetPort': servers['SeamlessPort']})
         AtlasService['spec']['ports'].insert(0,{'name': SeamlessPortNameUDP, 'port': servers['SeamlessPort'], 'protocol': 'UDP', 'targetPort': servers['SeamlessPort']})
-        AtlasService['spec']['ports'].insert(0,{'name': GamePortNameTCP, 'port': servers['GamePort'], 'protocol': 'TCP', 'targetPort': servers['GamePort']})
         AtlasService['spec']['ports'].insert(0,{'name': GamePortNameUDP, 'port': servers['GamePort'], 'protocol': 'UDP', 'targetPort': servers['GamePort']})
-        AtlasService['spec']['ports'].insert(0,{'name': QueryPortNameTCP, 'port': servers['QueryPort'], 'protocol': 'TCP', 'targetPort': servers['QueryPort']})
         AtlasService['spec']['ports'].insert(0,{'name': QueryPortNameUDP, 'port': servers['QueryPort'], 'protocol': 'UDP', 'targetPort': servers['QueryPort']})
-        AtlasService['spec']['ports'].insert(0,{'name': RCONPortNameTCP, 'port': servers['RCONPort'], 'protocol': 'TCP', 'targetPort': servers['RCONPort']})
         AtlasService['spec']['ports'].insert(0,{'name': RCONPortNameUDP, 'port': servers['RCONPort'], 'protocol': 'UDP', 'targetPort': servers['RCONPort']})
         iteration += 1
-    AtlasService['metadata']['name'] = 'atlas'
+    AtlasService['metadata']['name'] = 'atlas-udp'
     AtlasService['metadata']['namespace']='atlas-shards'
     AtlasService['metadata']['labels'] = {'app':'Atlas'}
     AtlasService['spec']['selector'] = {'app': 'Atlas'}
-    AtlasService_Path = "/app/yaml/AtlasService.yaml"
+    AtlasService_Path = "/app/yaml/AtlasServiceUDP.yaml"
     with open(AtlasService_Path,"w") as AtlasService_File:
         yaml.dump(AtlasService, AtlasService_File)
-    os.system('kubectl apply -f /app/yaml/AtlasService.yaml')
+    os.system('kubectl apply -f /app/yaml/AtlasServiceUDP.yaml')
 
     AtlasDeployment_Path = "/app/deployments/"
 
