@@ -243,10 +243,10 @@ if (os.environ.get('POD_TYPE') == 'mgmt'):
         with open(DeploymentTemplate_Path) as st:
             DeploymentTemplate = yaml.load(st,Loader=yaml.FullLoader)
         AtlasDeployment=DeploymentTemplate
-        SeamlessPortStr = str(SeamlessPort)
-        GamePortStr = str(GamePort)
-        QueryPortStr = str(QueryPort)
-        RCONPortStr = str(RCONPort)
+        SeamlessPortStr = str(servers['SeamlessPort'])
+        GamePortStr = str(servers['GamePort'])
+        QueryPortStr = str(servers['QueryPort'])
+        RCONPortStr = str(servers['RCONPort'])
         ContainerName = "atlas-" + lcconabc(servers['x']+1) + str(servers['y']+1)
         SeamlessPortNameTCP = "tcp" + str(servers['SeamlessPort'])
         GamePortNameTCP = "tcp" + str(servers['GamePort'])
