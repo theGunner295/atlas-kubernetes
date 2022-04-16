@@ -14,8 +14,8 @@ with open(INPUT_FILE,'r+') as ServerGrid_File:
 
 
 SeamlessPort = 27000
-GamePort = 5760
-QueryPort = 57560
+GamePort = 5761
+QueryPort = 57561
 
 iteration = 0
 for servers in ServerGrid['servers']:
