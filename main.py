@@ -184,6 +184,7 @@ if (os.environ.get('POD_TYPE') == 'mgmt'):
     RedisDeployment['spec']['template']['spec']['containers'][0]['ports'][0]['name'] = 'tcp6379'
     RedisDeployment['spec']['template']['spec']['containers'][0]['ports'][0]['containerPort'] = 6379
     RedisDeployment['spec']['template']['spec']['containers'][0]['ports'][0]['protocol'] = 'TCP'
+    RedisDeployment['spec']['template']['spec']['containers'][0]['resources']['requests'] = {'memory':'512Mi'}
     RedisDeployment['spec']['template']['spec']['containers'][0]['env'] = [
         {'name': 'POD_TYPE', 'value': 'redis'},
         {'name': 'REDIS_PORT', 'value': '6379'}]
@@ -290,6 +291,7 @@ if (os.environ.get('POD_TYPE') == 'mgmt'):
         AtlasDeployment['spec']['template']['spec']['containers'].insert(len(AtlasDeployment['spec']['template']['spec']['containers']),{})
         AtlasDeployment['spec']['template']['spec']['containers'][0]['image'] = 'awesomejack295/atlas-kubernetes'
         AtlasDeployment['spec']['template']['spec']['containers'][0]['name'] = ContainerName
+        RedisDeployment['spec']['template']['spec']['containers'][0]['resources']['requests'] = {'memory':'2048Mi'}
         AtlasDeployment['spec']['template']['spec']['containers'][0]['ports'] = [
             {'name' : SeamlessPortNameTCP, 'containerPort' : servers['SeamlessPort'], 'protocol' : 'TCP'},
             {'name' : SeamlessPortNameUDP,'containerPort' : servers['SeamlessPort'], 'protocol' : 'UDP'},
